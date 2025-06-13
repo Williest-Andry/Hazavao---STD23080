@@ -15,8 +15,8 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @AllArgsConstructor
 public class MalagasyDefinitionService {
-  @Value("${openai.api.key}")
-  private final String apiKey;
+//  @Value("${openai.api.key}")
+  private final String apiKey ="";
 
   private static final String API_URL = "https://api.openai.com/v1/chat/completions";
 
