@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import software.amazon.awssdk.http.HttpStatusCode;
 
 @RestController
 @AllArgsConstructor
@@ -13,8 +14,12 @@ public class MalagasyDefinitionController {
   private final MalagasyDefinitionService malagasyDefinitionService;
 
   @GetMapping("/hazavao")
-  public ResponseEntity<String> getMalagasyDefinition(@RequestParam String teny) {
-    String definition = malagasyDefinitionService.getDefinition(teny);
-    return ResponseEntity.ok(definition);
+  public ResponseEntity<Object> getMalagasyDefinition(@RequestParam String teny) {
+    try {
+      String definition = malagasyDefinitionService.getDefinition(teny);
+      return ResponseEntity.ok(definition);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatusCode.INTERNAL_SERVER_ERROR).body(e);
+    }
   }
 }

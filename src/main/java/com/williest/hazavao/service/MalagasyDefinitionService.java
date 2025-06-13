@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
-import lombok.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -15,10 +14,10 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @AllArgsConstructor
 public class MalagasyDefinitionService {
-//  @Value("${openai.api.key}")
-  private final String apiKey ="";
+  //  @Value("${openai.api.key}")
+  private final String apiKey = "";
 
-  private static final String API_URL = "https://api.openai.com/v1/chat/completions";
+  private final String API_URL = "https://api.openai.com/v1/chat/completions";
 
   public String getDefinition(String teny) {
     RestTemplate restTemplate = new RestTemplate();
@@ -38,7 +37,12 @@ public class MalagasyDefinitionService {
 
     HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
 
-    ResponseEntity<Map> response = restTemplate.postForEntity(API_URL, requestEntity, Map.class);
+    ResponseEntity<Map> response = null;
+    try {
+      response = restTemplate.postForEntity(API_URL, requestEntity, Map.class);
+    } catch (Exception e) {
+      throw new RuntimeException("Erreur inattendue : " + e);
+    }
 
     List<Map> choices = (List<Map>) response.getBody().get("choices");
     Map message = (Map) choices.get(0).get("message");
