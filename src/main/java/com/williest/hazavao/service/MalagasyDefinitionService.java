@@ -41,7 +41,7 @@ public class MalagasyDefinitionService {
     try {
       response = restTemplate.postForEntity(API_URL, requestEntity, Map.class);
     } catch (Exception e) {
-      throw new RuntimeException("Erreur inattendue : " + e);
+      return "Error : " + e;
     }
 
     List<Map> choices = (List<Map>) response.getBody().get("choices");
